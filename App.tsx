@@ -11,6 +11,7 @@ export default function App() {
     // TODO: validate user's data
 
     /*
+    sdasds
     if (success) {
       Alert.alert(
         "User Signup", `Language: ${selectedLanguage}`
