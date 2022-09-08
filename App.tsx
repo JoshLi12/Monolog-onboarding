@@ -18,6 +18,8 @@ UPDATES FOR NEXT MEETING:
   1. it felt weird that an error message just pops onto the screen, so it would be good to let users know
   2. pressing the "OK" on the alert message will trigger the button to turn back to blue
   ^ i couldn't find any other way to make the button change back after a reasonable time period
+
+  
 */
 
 export default function App() {
