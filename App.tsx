@@ -2,47 +2,138 @@ import * as React from 'react';
 import { Text, View, StyleSheet, Pressable, Alert } from 'react-native';
 import Constants from 'expo-constants';
 import { Picker } from '@react-native-picker/picker';
+import { validateGender, validatePronouns } from './helperFunctions.js';
 
+
+/*
+UPDATES FOR NEXT MEETING:
+1. Added title with font and color according to monolog website
+2. added placeholder for picker (can be subject to change)
+3. styled button with shape, color, text font, position, and on press change color
+4. shortened error message so picker items wont overlap with error message
+5. shortened pronouns items because it still overlapped with error message
+6. made button change color when pressed, so it feels more like a button and less like an image
+7. pressing the button triggers the button to change color
+8. i added an alert for 2 reasons
+  1. it felt weird that an error message just pops onto the screen, so it would be good to let users know
+  2. pressing the "OK" on the alert message will trigger the button to turn back to blue
+  ^ i couldn't find any other way to make the button change back after a reasonable time period
+*/
 
 export default function App() {
-  const [selectedLanguage, setSelectedLanguage] = React.useState();
+  const [selectedGender, setSelectedGender] = React.useState();
+  const [selectedPronouns, setSelectedPronouns] = React.useState();
+  const [displayGenderError, setDisplayGenderError] = React.useState(false);
+  const [displayPronounsError, setDisplayPronounsError] = React.useState(false);
+  const [pressedButtonColor, setPressedButtonColor] = React.useState(false);
+
+  const alertMessage = () => {
+    Alert.alert(
+      "Signup Error",
+      "Please check again",
+      [
+        {
+          text: "OK",
+          onPress: () => setPressedButtonColor(false)
+        }
+      ]
+    )
+  }
 
   const handleSignUp = () => {
-    // TODO: validate user's data
+    setPressedButtonColor(true);
 
-    /*
-    sdasds
-    if (success) {
-      Alert.alert(
-        "User Signup", `Language: ${selectedLanguage}`
-      );
-      // navigate to next page
-    } else {
-      // Alert to display error message
+    if (!validateGender(selectedGender) || !validatePronouns(selectedPronouns)) {
+      alertMessage()
     }
-    */
-  }
+
+    if (!validateGender(selectedGender)) {
+      setDisplayGenderError(true);
+
+    } else if (validateGender(selectedGender)) {
+
+      setDisplayGenderError(false);
+    }
+
+    if (!validatePronouns(selectedPronouns)) {
+      setDisplayPronounsError(true);
+
+    } else if (validatePronouns(selectedPronouns)) {
+      setDisplayPronounsError(false);
+    }
+  };
+
 
   return (
     <View style={styles.container}>
+
+      {displayGenderError && (
+        <Text style={styles.genderError}>*Choose a gender</Text>
+      )}
+
+      <Text style={styles.genderTitle}>Gender</Text>
+
       <Picker
-        selectedValue={selectedLanguage}
+
+        selectedValue={selectedGender}
+
+        onValueChange={(itemValue, itemIndex) => setSelectedGender(itemValue)}>
+
+        <Picker.Item label="--Select--" value="" />
+        <Picker.Item label="Male" value="Male" />
+        <Picker.Item label="Female" value="Female" />
+        <Picker.Item label="Other" value="Other" />
+
+      </Picker>
+
+      <Text style={styles.pronounsTitle}>Pronouns</Text>
+
+      {displayPronounsError && (
+        <Text style={styles.pronounsError}>*Choose a pronoun</Text>
+      )}
+
+      <Picker
+
+        selectedValue={selectedPronouns}
+
         onValueChange={(itemValue, itemIndex) =>
-          setSelectedLanguage(itemValue)
+          setSelectedPronouns(itemValue)
         }>
-        <Picker.Item label="Hello" value="java" />
-        <Picker.Item label="JavaScript" value="js" />
+
+        <Picker.Item label="--Select--" value="" />
+        <Picker.Item label="He/Him" value="He/Him" />
+        <Picker.Item label="She/Her" value="She/Her" />
+        <Picker.Item label="They/Them" value="They/Them" />
+        <Picker.Item label="Other" value="Other" />
+
       </Picker>
 
       <Pressable
         onPress={handleSignUp}
-        style={styles.signUpButton}
-      >
-        <Text style={styles.signUpText}>
+
+        style={{
+          borderWidth: 1.3,
+          padding: 16,
+          width: '80%',
+          backgroundColor: pressedButtonColor ? "white" : '#6bc5f5',
+          borderRadius: 30,
+          borderColor: '#6bc5f5',
+          left: '10%',
+          bottom: '-6.5%'
+        }
+
+        }>
+        <Text
+          style={{
+            color: pressedButtonColor ? '#6bc5f5' : 'white',
+            font: 'PT Serif',
+            fontSize: 19,
+            left: '40%'
+          }}>
           Sign Up
         </Text>
-      </Pressable>
 
+      </Pressable>
     </View>
   );
 }
@@ -52,22 +143,38 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#ecf0f1',
+    backgroundColor: 'white',
     padding: 8,
   },
-  paragraph: {
-    margin: 24,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
+
+  genderError: {
+    color: 'red',
+    fontSize: 15,
+    position: 'absolute',
+    left: 20,
+    top: '32.3%',
   },
-  signUpButton: {
-    borderWidth: 1,
-    padding: 10,
-    backgroundColor: 'green'
+  pronounsError: {
+    color: 'red',
+    fontSize: 15,
+    position: 'absolute',
+    left: 20,
+    top: '57.7%',
   },
-  signUpText: {
-    color: "red",
-    fontSize: 10
-  }
+  genderTitle: {
+    color: '#6bc5f5',
+    fontSize: 34,
+    font: 'PT Serif',
+    position: 'absolute',
+    left: 20,
+    top: '26.7%',
+  },
+  pronounsTitle: {
+    color: '#6bc5f5',
+    fontSize: 33,
+    font: 'PT Serif',
+    position: 'absolute',
+    left: 20,
+    top: '52.2%',
+  },
 });
