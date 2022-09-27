@@ -4,7 +4,6 @@ import Constants from 'expo-constants';
 import { Picker } from '@react-native-picker/picker';
 import { validateGender, validatePronouns } from './helperFunctions.js';
 
-
 /*
 UPDATES FOR NEXT MEETING:
 1. Added title with font and color according to monolog website
@@ -31,42 +30,32 @@ export default function App() {
     Alert.alert(
       "Signup Error",
       "Please check again",
-      [
-        {
-          text: "OK",
-          onPress: () => setPressedButtonColor(false)
-        }
-      ]
+      [{ text: "OK", onPress: () => setPressedButtonColor(false)}]
     )
   }
 
   const handleSignUp = () => {
     setPressedButtonColor(true);
 
-    if (!validateGender(selectedGender) || !validatePronouns(selectedPronouns)) {
+    if (!validateGender(selectedGender) || !validatePronouns(selectedPronouns))
       alertMessage()
-    }
 
     if (!validateGender(selectedGender)) {
       setDisplayGenderError(true);
-
     } else if (validateGender(selectedGender)) {
-
       setDisplayGenderError(false);
     }
 
     if (!validatePronouns(selectedPronouns)) {
       setDisplayPronounsError(true);
-
     } else if (validatePronouns(selectedPronouns)) {
       setDisplayPronounsError(false);
     }
-  };
+  }
 
 
   return (
     <View style={styles.container}>
-
       {displayGenderError && (
         <Text style={styles.genderError}>*Choose a gender</Text>
       )}
@@ -74,16 +63,13 @@ export default function App() {
       <Text style={styles.genderTitle}>Gender</Text>
 
       <Picker
-
         selectedValue={selectedGender}
-
-        onValueChange={(itemValue, itemIndex) => setSelectedGender(itemValue)}>
-
+        onValueChange={(itemValue, itemIndex) => setSelectedGender(itemValue)}
+      >
         <Picker.Item label="--Select--" value="" />
         <Picker.Item label="Male" value="Male" />
         <Picker.Item label="Female" value="Female" />
         <Picker.Item label="Other" value="Other" />
-
       </Picker>
 
       <Text style={styles.pronounsTitle}>Pronouns</Text>
@@ -93,24 +79,20 @@ export default function App() {
       )}
 
       <Picker
-
         selectedValue={selectedPronouns}
-
         onValueChange={(itemValue, itemIndex) =>
           setSelectedPronouns(itemValue)
-        }>
-
+        }
+      >
         <Picker.Item label="--Select--" value="" />
         <Picker.Item label="He/Him" value="He/Him" />
         <Picker.Item label="She/Her" value="She/Her" />
         <Picker.Item label="They/Them" value="They/Them" />
         <Picker.Item label="Other" value="Other" />
-
       </Picker>
 
       <Pressable
         onPress={handleSignUp}
-
         style={{
           borderWidth: 1.3,
           padding: 16,
@@ -120,19 +102,18 @@ export default function App() {
           borderColor: '#6bc5f5',
           left: '10%',
           bottom: '-6.5%'
-        }
-
-        }>
+        }}
+      >
         <Text
           style={{
             color: pressedButtonColor ? '#6bc5f5' : 'white',
             font: 'PT Serif',
             fontSize: 19,
             left: '40%'
-          }}>
+          }}
+        >
           Sign Up
         </Text>
-
       </Pressable>
     </View>
   );
@@ -176,5 +157,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 20,
     top: '52.2%',
-  },
+  }
 });
