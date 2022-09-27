@@ -20,13 +20,13 @@ UPDATES FOR NEXT MEETING:
 */
 
 export default function App() {
-  const [selectedGender, setSelectedGender] = React.useState();
-  const [selectedPronouns, setSelectedPronouns] = React.useState();
-  const [displayGenderError, setDisplayGenderError] = React.useState(false);
-  const [displayPronounsError, setDisplayPronounsError] = React.useState(false);
-  const [pressedButtonColor, setPressedButtonColor] = React.useState(false);
+  const [selectedGender, setSelectedGender] = React.useState<string>("");
+  const [selectedPronouns, setSelectedPronouns] = React.useState<string>("");
+  const [displayGenderError, setDisplayGenderError] = React.useState<boolean>(false);
+  const [displayPronounsError, setDisplayPronounsError] = React.useState<boolean>(false);
+  const [pressedButtonColor, setPressedButtonColor] = React.useState<boolean>(false);
 
-  const alertMessage = () => {
+  const alertMessage = ():void => {
     Alert.alert(
       "Signup Error",
       "Please check again",
@@ -34,7 +34,7 @@ export default function App() {
     )
   }
 
-  const handleSignUp = () => {
+  const handleSignUp = ():void => {
     setPressedButtonColor(true);
 
     if (!validateGender(selectedGender) || !validatePronouns(selectedPronouns))
@@ -52,7 +52,6 @@ export default function App() {
       setDisplayPronounsError(false);
     }
   }
-
 
   return (
     <View style={styles.container}>
@@ -107,7 +106,7 @@ export default function App() {
         <Text
           style={{
             color: pressedButtonColor ? '#6bc5f5' : 'white',
-            font: 'PT Serif',
+            fontFamily: 'PT Serif',
             fontSize: 19,
             left: '40%'
           }}
