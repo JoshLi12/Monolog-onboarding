@@ -40,30 +40,18 @@ export default function App() {
     if (!validateGender(selectedGender) || !validatePronouns(selectedPronouns))
       alertMessage()
 
-    if (!validateGender(selectedGender)) {
-      setDisplayGenderError(true);
-    } else if (validateGender(selectedGender)) {
-      setDisplayGenderError(false);
-    }
-
-    if (!validatePronouns(selectedPronouns)) {
-      setDisplayPronounsError(true);
-    } else if (validatePronouns(selectedPronouns)) {
-      setDisplayPronounsError(false);
-    }
+    setDisplayGenderError(!validateGender(selectedGender));
+    setDisplayPronounsError(!validatePronouns(selectedPronouns));
   }
 
   return (
     <View style={styles.container}>
-      {displayGenderError && (
-        <Text style={styles.genderError}>*Choose a gender</Text>
-      )}
-
+      {displayGenderError && <Text style={styles.genderError}>*Choose a gender</Text> }
       <Text style={styles.genderTitle}>Gender</Text>
 
       <Picker
         selectedValue={selectedGender}
-        onValueChange={(itemValue, itemIndex) => setSelectedGender(itemValue)}
+        onValueChange={(itemValue: string):void => setSelectedGender(itemValue)}
       >
         <Picker.Item label="--Select--" value="" />
         <Picker.Item label="Male" value="Male" />
@@ -71,12 +59,9 @@ export default function App() {
         <Picker.Item label="Other" value="Other" />
       </Picker>
 
+      {displayPronounsError && <Text style={styles.pronounsError}>*Choose a pronoun</Text>}
       <Text style={styles.pronounsTitle}>Pronouns</Text>
-
-      {displayPronounsError && (
-        <Text style={styles.pronounsError}>*Choose a pronoun</Text>
-      )}
-
+      
       <Picker
         selectedValue={selectedPronouns}
         onValueChange={(itemValue, itemIndex) =>
