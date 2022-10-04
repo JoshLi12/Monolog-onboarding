@@ -1,24 +1,12 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Pressable, Alert } from 'react-native';
-import Constants from 'expo-constants';
+import { Text, StyleSheet, Pressable, Alert, SafeAreaView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { validateGender, validatePronouns } from './helperFunctions.js';
 
+const GENDERS = [{'label': "--Select--", 'value': ""}, {'label': "Male", 'value': "Male"}, {'label': 'Female', 'value': "Female"}, {'label': 'Other', 'value' : 'Other'}]
 
-/*
-UPDATES FOR NEXT MEETING:
-1. Added title with font and color according to monolog website
-2. added placeholder for picker (can be subject to change)
-3. styled button with shape, color, text font, position, and on press change color
-4. shortened error message so picker items wont overlap with error message
-5. shortened pronouns items because it still overlapped with error message
-6. made button change color when pressed, so it feels more like a button and less like an image
-7. pressing the button triggers the button to change color
-8. i added an alert for 2 reasons
-  1. it felt weird that an error message just pops onto the screen, so it would be good to let users know
-  2. pressing the "OK" on the alert message will trigger the button to turn back to blue
-  ^ i couldn't find any other way to make the button change back after a reasonable time period
-*/
+const PRONOUNS = [{'label': "--Select--", 'value': ""}, {'label': "He/Him", 'value': "He/Him"}, {'label': 'She/Her', 'value': "She/Her"}, {'label': 'They/Them', 'value' : 'They/Them'}, {'label': 'Other', 'value' : 'Other'}]
+
 
 export default function App() {
   const [selectedGender, setSelectedGender] = React.useState();
@@ -65,7 +53,7 @@ export default function App() {
 
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
 
       {displayGenderError && (
         <Text style={styles.genderError}>*Choose a gender</Text>
@@ -79,10 +67,8 @@ export default function App() {
 
         onValueChange={(itemValue, itemIndex) => setSelectedGender(itemValue)}>
 
-        <Picker.Item label="--Select--" value="" />
-        <Picker.Item label="Male" value="Male" />
-        <Picker.Item label="Female" value="Female" />
-        <Picker.Item label="Other" value="Other" />
+        {GENDERS.map(gender => <Picker.Item label={gender.label} value={gender.value} />)}
+
 
       </Picker>
 
@@ -100,29 +86,15 @@ export default function App() {
           setSelectedPronouns(itemValue)
         }>
 
-        <Picker.Item label="--Select--" value="" />
-        <Picker.Item label="He/Him" value="He/Him" />
-        <Picker.Item label="She/Her" value="She/Her" />
-        <Picker.Item label="They/Them" value="They/Them" />
-        <Picker.Item label="Other" value="Other" />
+        {PRONOUNS.map(pronouns => <Picker.Item label={pronouns.label} value={pronouns.value} />)}
 
       </Picker>
 
       <Pressable
+        style={ [styles.signUpPressable, { backgroundColor: pressedButtonColor ? "white" : '#6bc5f5' }] }
         onPress={handleSignUp}
+>
 
-        style={{
-          borderWidth: 1.3,
-          padding: 16,
-          width: '80%',
-          backgroundColor: pressedButtonColor ? "white" : '#6bc5f5',
-          borderRadius: 30,
-          borderColor: '#6bc5f5',
-          left: '10%',
-          bottom: '-6.5%'
-        }
-
-        }>
         <Text
           style={{
             color: pressedButtonColor ? '#6bc5f5' : 'white',
@@ -134,7 +106,7 @@ export default function App() {
         </Text>
 
       </Pressable>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -142,9 +114,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    paddingTop: Constants.statusBarHeight,
     backgroundColor: 'white',
     padding: 8,
+  },
+  signUpPressable: {
+    borderWidth: 1.3,
+    padding: 16,
+    width: '80%',
+    borderRadius: 30,
+    borderColor: '#6bc5f5',
+    left: '10%',
+    bottom: '-6.5%'
   },
 
   genderError: {
@@ -154,6 +134,7 @@ const styles = StyleSheet.create({
     left: 20,
     top: '32.3%',
   },
+
   pronounsError: {
     color: 'red',
     fontSize: 15,
